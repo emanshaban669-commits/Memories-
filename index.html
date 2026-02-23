@@ -304,3 +304,79 @@ if(input === password){
   </style>
 </head>
 <body>    
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عيد ميلاد نور عيني ♥️</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+      color: white;
+      padding: 50px;
+    }
+    h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 1.2em;
+      max-width: 600px;
+      margin: 0 auto 20px auto;
+      line-height: 1.5em;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>ذكرياتنا ♥️</h1>
+  <div id="message"></div>
+
+  <audio id="music" autoplay loop>
+    <source src="OmKolHayati.mp3" type="audio/mpeg">
+    متصفحك لا يدعم تشغيل الصوت
+  </audio>
+
+  <script>
+    // التاريخ والوقت المطلوب: 21 مارس الساعة 00:00
+    const targetDate = new Date();
+    targetDate.setMonth(2); // مارس = 2 (0 يناير)
+    targetDate.setDate(21);
+    targetDate.setHours(0);
+    targetDate.setMinutes(0);
+    targetDate.setSeconds(0);
+
+    function checkTime() {
+      const now = new Date();
+      // لو التاريخ والوقت مطابق
+      if (
+        now.getFullYear() === targetDate.getFullYear() &&
+        now.getMonth() === targetDate.getMonth() &&
+        now.getDate() === targetDate.getDate() &&
+        now.getHours() === targetDate.getHours() &&
+        now.getMinutes() === targetDate.getMinutes()
+      ) {
+        // إظهار الرسالة
+        const msg = `
+          <p>أول عيد ميلاد لينا سوا يا نور عيني ♥️<br>
+          أحلى حاجة حصلت في دنيتي ومن أجمل الأيام، علشان اتولد فيها قطعة من روحي وقلبي وحته مني.<br>
+          اليوم ده تلقائيًا بقى أجمل يوم في العمر يا روح قلبي من جوا جوا جواااا 😍<br>
+          بحبك يا حموودي موت 😱🥹<br>
+          ربنا يديمك ليا ويجمعني بيك على خير ♥️<br>
+          وأحب أقول لك زي أغنية عمرو دياب: "كل حياتي بحبك… كل حياتي محتاجلك" 🎵</p>
+        `;
+        document.getElementById('message').innerHTML = msg;
+        alert("🎉 عيد ميلاد سعيد يا نور عيني! ♥️");
+      }
+    }
+
+    // يفحص كل دقيقة
+    setInterval(checkTime, 60000);
+    checkTime(); // يفحص مباشرة لو الصفحة اتفتحت الساعة المناسبة
+  </script>
+
+</body>
+</html>
