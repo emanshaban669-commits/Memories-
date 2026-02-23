@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>ذكرياتنا مع الأغاني 💖</title>
+<style>
+body { font-family:'Arial'; text-align:center; margin:0; padding:50px; background:linear-gradient(to bottom,#ffe6f0,#fff0f5); overflow-x:hidden;}
+h1{color:#d6336c; font-size:32px;}
+input,textarea,select{padding:10px;margin:5px;font-size:16px;border-radius:5px;border:1px solid #d6336c;}
+button{padding:10px 20px;background-color:#d6336c;color:white;border:none;cursor:pointer;margin:5px;border-radius:5px;}
+button:hover{background-color:#b52a5b;}
+#content{display:none;margin-top:30px;}
+.memory{border:2px solid #d6336c;border-radius:15px;padding:15px;margin:15px auto;max-width:320px;box-shadow:2px 2px 10px rgba(0,0,0,0.2);position:relative;transition: all 0.5s; opacity:0;}
+.memory.show{opacity:1; transform:translateY(0);}
+.memory.text{background-color:#ffe6f0;}
+.memory.image{background-color:#ffd6e0;}
+.memory.video{background-color:#ffccd9;}
+.memory.audio{background-color:#ffb3c6;}
+.memory:hover{transform:scale(1.05) rotate(1deg);}
+img, video, audio{max-width:100%;border-radius:10px;margin-top:10px;}
+.edit-btn,.delete-btn{position:absolute;top:5px;padding:5px 10px;font-size:12px;border-radius:5px;}
+.edit-btn{right:50px;background-color:#ffb3c6;}
+.delete-btn{right:5px;background-color:#ff4d6d;}
+.heart{position:absolute;width:20px;height:20px;background-color:#d6336c;transform:rotate(-45deg);animation:floatUp 6s linear infinite;}
+.heart::before,.heart::after{content:"";position:absolute;width:20px;height:20px;background-color:#d6336c;border-radius:50%;}
+.heart::before{top:-10px;left:0;} .heart::after{left:10px;top:0;}
+@keyframes floatUp{0%{transform:translateY(0) rotate(-45deg);opacity:1;}100%{transform:translateY(-600px) rotate(-45deg);opacity:0;}}
+</style>
+</head>
+<body>
+
+<h1>💖 ذكرياتنا مع الأغاني</h1>
+
+<div id="login">
+  <p>ادخلي كلمة السر للمتابعة:</p>
+  <input type="password" id="password" placeholder="كلمة السر">
+  <button onclick="checkPassword()">دخول</button>
+</div>
+
+<div id="content">
+<h2>هذا الموقع خاص بيني وبين خطيبي ❤️</h2>
+
+<h3>قائمة تشغيل الأغاني:</h3>
+<select id="songs" onchange="playSong()">
+  <option value="">اختاري أغنية</option>
+  <!-- ضعي هنا ملفاتك الخاصة -->
+  <option value="amr1.mp3">عمرو دياب - أغنية 1</option>
+  <option value="amr2.mp3">عمرو دياب - أغنية 2</option>
+  <option value="amr3.mp3">عمرو دياب - أغنية 3</option>
+</select>
+<audio id="music" controls></audio>
+
+<h3>أضيفي أو عدلي ذكرياتك:</h3>
+<input type="text" id="date" placeholder="اكتبي التاريخ مثلا 23-02-2026"><br>
+<textarea id="text" placeholder="اكتبي ذكريتك أو جملة جميلة"></textarea><br>
+<select id="type">
+<option value="text">جملة</option>
+<option value="image">صورة</option>
+<option value="video">فيديو</option>
+<option value="audio">أغنية</option>
+</select><br>
+<input type="file" id="file"><br>
+<button onclick="saveMemory()">حفظ الذكرى</button>
+
+<div id="memories"></div>
+</div>
+
+<script>
+let editIndex=-1;
+
+function checkPassword(){
+let pass=document.getElementById('password').value;
+if(pass==="512"){ // غيّري كلمة السر هنا لو تحبي
+document.getElementById('login').style.display='none';
+document.getElementById('content').style.display='block';
+startHearts(); loadMemories();
+}else{ alert("كلمة السر خاطئة 😢"); }
+}
+
+function playSong(){
+  let song = document.getElementById('songs').value;
+  let music = document.getElementById('music');
+  if(song){ music.src = song; music.play(); }
+}
+
+function saveMemory(){
+let date=document.getElementById('date').value;
+let text=document.getElementById('text').value;
+let type=document.getElementById('type').value;
+let file=document.getElementById('file').files[0];
+
+if(!date||(!text&&type==="text")){ alert("رجاءً املئي الحقول!"); return; }
+
+let reader=new FileReader();
+reader.onload=function(e){
+let dataUrl=e.target.result||"";
+let memories=JSON.parse(localStorage.getItem("memories")||"[]");
+let memory={date,text,type,data:dataUrl};
+if(editIndex>=0){ memories[editIndex]=memory; editIndex=-1; } 
+else memories.push(memory);
+localStorage.setItem("memories",JSON.stringify(memories));
+displayAllMemories(); clearFields();
+}
+
+if(file) reader.readAsDataURL(file);
+else reader.onload();
+}
+
+function displayAllMemories(){
+let div=document.getElementById('memories'); div.innerHTML='';
+let memories=JSON.parse(localStorage.getItem("memories")||"[]");
+memories.forEach((m,i)=>{
+let memDiv=document.createElement('div'); 
+memDiv.className=`memory ${m.type}`; 
+let content='';
+if(m.type=="text") content=`<p>${m.text}</p>`;
+else if(m.type=="image") content=`<img src="${m.data}">`;
+else if(m.type=="video") content=`<video controls src="${m.data}"></video>`;
+else if(m.type=="audio") content=`<audio controls src="${m.data}"></audio>`;
+memDiv.innerHTML=`<strong>${m.date}</strong>`+content+
+`<button class="edit-btn" onclick="editMemory(${i})">تعديل</button>`+
+`<button class="delete-btn" onclick="deleteMemory(${i})">حذف</button>`;
+div.appendChild(memDiv);
+setTimeout(()=>{memDiv.classList.add('show');},50);
+});
+}
+
+function loadMemories(){ displayAllMemories(); }
+function editMemory(i){ 
+let memories=JSON.parse(localStorage.getItem("memories")||"[]");
+let m=memories[i]; 
+document.getElementById('date').value=m.date;
+document.getElementById('text').value=m.text;
+document.getElementById('type').value=m.type;
+editIndex=i;
+}
+function deleteMemory(i){
+let memories=JSON.parse(localStorage.getItem("memories")||"[]");
+memories.splice(i,1);
+localStorage.setItem("memories",JSON.stringify(memories));
+displayAllMemories();
+}
+function clearFields(){ document.getElementById('date').value=''; document.getElementById('text').value=''; document.getElementById('file').value=''; }
+
+function startHearts(){
+for(let i=0;i<30;i++){
+let h=document.createElement('div'); h.className='heart';
+h.style.left=Math.random()*window.innerWidth+'px';
+h.style.animationDuration=(3+Math.random()*3)+'s';
+document.body.appendChild(h);
+setInterval(()=>{ h.style.left=Math.random()*window.innerWidth+'px'; },6000);
+}
+}
+</script>
+</body>
+  </html>
