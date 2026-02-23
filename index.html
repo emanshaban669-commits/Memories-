@@ -2,7 +2,7 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>ذكرياتنا مع الأغاني 💖</title>
+<title> حبيب عيوني💍🌎💋 💖</title>
 <style>
 body { font-family:'Arial'; text-align:center; margin:0; padding:50px; background:linear-gradient(to bottom,#ffe6f0,#fff0f5); overflow-x:hidden;}
 h1{color:#d6336c; font-size:32px;}
@@ -154,3 +154,49 @@ setInterval(()=>{ h.style.left=Math.random()*window.innerWidth+'px'; },6000);
 </script>
 </body>
   </html>
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع الصور</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>معرض الصور</h1>
+
+<div class="gallery">
+    <img src="images/photo1.jpg" alt="صورة 1">
+    <img src="images/photo2.png" alt="صورة 2">
+    <img src="images/photo3.jpg" alt="صورة 3">
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f0f0f0;
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.gallery img {
+    width: 200px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    transition: transform 0.3s;
+}
+
+.gallery img:hover {
+    transform: scale(1.1);
+}
