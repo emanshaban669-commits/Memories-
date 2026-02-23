@@ -164,7 +164,8 @@ setInterval(()=>{ h.style.left=Math.random()*window.innerWidth+'px'; },6000);
 </head>
 <body>
 
-<h1>معرض الصور</h1>
+
+
 
 <div class="gallery">
     
@@ -204,7 +205,42 @@ setInterval(()=>{ h.style.left=Math.random()*window.innerWidth+'px'; },6000);
     // رفع الأغاني وتشغيلها
     const audioInput = document.getElementById('audioInput');
     const audioPreview = document.getElementById('audioPreview');
+<body>
+  <div id="content" style="display:none;">
 
+    <h2>صورنا</h2>
+    <img src="images/pic1.jpg" width="300">
+    <img src="images/pic2.png" width="300">
+    <img src="images/pic3.jpg" width="300">
+
+    <h2>أغاني</h2>
+    <audio controls>
+      <source src="audio/song1.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls>
+      <source src="audio/song2.mp3" type="audio/mpeg">
+    </audio>
+
+    <h2>فيديوهات</h2>
+    <video width="400" controls>
+      <source src="video/vid1.mp4" type="video/mp4">
+    </video>
+    <video width="400" controls>
+      <source src="video/vid2.mp4" type="video/mp4">
+    </video>
+
+  </div>
+</body><script>
+let password = "512"; // هنا تحطي الباسورد
+let input = prompt("ادخلي كلمة السر:");
+
+if(input === password){
+    document.getElementById("content").style.display = "block";
+} else {
+    alert("كلمة السر غلط!");
+    document.body.innerHTML = "";
+}
+</script>
     audioInput.addEventListener('change', function() {
       const file = this.files[0];
       if(file){
